@@ -1,5 +1,10 @@
 class_name JsonMod extends Mod
 
+## A [Mod] that is created by loading data from a JSON [Dictionary]
+##
+## See [Mod] for more information.
+
+## The path to the JSON file from which this mod was created.
 @export var json_path: String = ""
 
 
@@ -36,10 +41,13 @@ func _init(json_path_value: String, json: Dictionary) -> void:
 	super._init()
 
 
+## Returns an absolute file path from a path relative to [member json_path].
+## e.g. [code]some_asset.png[/code] becomes [code]user://mods/my_mod/some_asset.png[/code]
 func to_absolute_path(path: String) -> String:
 	return (json_path.get_base_dir() + "/" + path).simplify_path()
 
 
+## Loads a script (extending [ModInstanceScript]) at the given path and returns a new [ModScript].
 func load_instance_script(path: String) -> ModScript:
 	if not path.is_empty():
 		var script := ModScript.load_script(path)
@@ -48,6 +56,8 @@ func load_instance_script(path: String) -> ModScript:
 	return null
 
 
+## Loads an asset at [code]relative_path[/code] and returns a new [ModAsset].
+## [code]type[/code] can be one of [code]["resource", "image"][/code]
 func load_asset(key: String, relative_path: String, type: String = "resource") -> ModAsset:
 	var path := to_absolute_path(relative_path)
 	match type.to_lower():
@@ -56,6 +66,6 @@ func load_asset(key: String, relative_path: String, type: String = "resource") -
 		_: return null
 
 
-
+## Returns a [String] that idenitifies this mod, usually the file path
 func get_identifier() -> String:
 	return json_path
