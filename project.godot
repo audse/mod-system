@@ -1,0 +1,38 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="ModSystem"
+config/features=PackedStringArray("4.1", "Mobile")
+config/icon="res://icon.svg"
+
+[autoload]
+
+ModSystem="*res://addons/mod_system/autoload/mod_system.gd"
+ModClassDB="*res://addons/mod_system/autoload/mod_class_db.gd"
+ModLoader="*res://addons/mod_system/autoload/mod_loader.gd"
+
+[dotnet]
+
+project/assembly_name="ModSystem"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/mod_system/plugin.cfg")
+
+[mod_system]
+
+mod_settings_save_path="user://mod_settings.tres"
+mod_paths="user://mods, res://tmp"
+
+[rendering]
+
+renderer/rendering_method="mobile"
