@@ -1,14 +1,20 @@
 extends Node
 
 
+## Handles loading and registering mods from the file system
+
+
 func _init() -> void:
 	load_all_mods()
 
 
+## Recursively finds all mod paths (must end in [code].mod.tres[/code] or [code].mod.json[/code])
+## and loads/registers them (see [method load_mod] and [method ModSystem.register]).
 func load_all_mods() -> void:
 	get_mod_paths(get_mod_dirs()).map(load_mod)
 
 
+## Loads a mod at the given [code]path[/code] and registers it (see [method ModSystem.register]).
 func load_mod(path: String) -> Mod:
 	if path.ends_with(".mod.tres"):
 		var resource = ResourceLoader.load(path)
@@ -24,6 +30,8 @@ func load_mod(path: String) -> Mod:
 	return null
 
 
+## Returns an [Array][[String]] of all mod paths (e.g. paths ending in [code].mod.tres[/code] or [code].mod.json[/code])
+## within the directories listed in [member ProjectSettings."mod_system/mod_paths"].
 func get_mod_paths(dirs: Array[String]) -> Array[String]:
 	var paths: Array[String] = []
 	for dir in dirs:
@@ -39,6 +47,7 @@ func get_mod_paths(dirs: Array[String]) -> Array[String]:
 	return paths
 
 
+## Returns an [Array][[String]] of all directories listed in [member ProjectSettings."mod_system/mod_paths"].
 func get_mod_dirs() -> Array[String]:
 	var dirs: Array[String] = []
 	for dir in ModSystemUtils.get_setting(ModSystemUtils.Settings.ModPath).split(","):
@@ -46,5 +55,6 @@ func get_mod_dirs() -> Array[String]:
 	return dirs
 
 
+## If [code]true[/code], the [code]path[/code] is in the format [code]*.mod.tres[/code] or [code]*.mod.json[/code].
 func is_mod_path(path: String) -> bool:
 	return path.ends_with(".mod.tres") or path.ends_with(".mod.json")
