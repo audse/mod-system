@@ -1,9 +1,6 @@
-extends Node2D
+class_name Main extends Node2D
 
 
-func _init() -> void:
+func _ready() -> void:
 	ModSystem.enable_all()
-
-
-func _enter_tree() -> void:
-	ModSystem.initialize(self, &"Main")
+	ModSystem.initialize(self)

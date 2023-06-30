@@ -35,9 +35,8 @@ var settings: ModSettings = ModSettings.load()
 ## [br]2. Grants all possible mods to [code]mod_owner[/code].
 ## [br]This is the easiest way to start accepting mods in an [Object]. Add this inside 
 ## the [code]_init[/code] function to any class that you want to be able to grant mods to.
-func initialize(mod_owner: Object, mod_owner_name = null) -> void:
-	if mod_owner_name is StringName: ModClassDB.register(mod_owner_name, mod_owner.get_script())
-	else: ModClassDB.register_object(mod_owner)
+func initialize(mod_owner: Object) -> void:
+	ModClassDB.register(mod_owner.get_script())
 	grant_all(mod_owner)
 
 

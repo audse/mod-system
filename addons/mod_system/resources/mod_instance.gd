@@ -21,8 +21,8 @@ func _init(mod_value: Mod, owner_value: Object) -> void:
 	owner = owner_value
 	
 	# Add instance script
-	if mod.instance_script and mod.instance_script.inner_script:
-		instance_script = mod.instance_script.inner_script.new(self)
+	if mod.instance_script:
+		instance_script = mod.instance_script.new(self)
 
 
 ## Grants the [member mod] to the [member owner], if it's enabled (see [member Mod.is_enabled]

@@ -19,21 +19,20 @@ signal class_unregistered(cls: RegisteredClass)
 var registered_classes: Array[RegisteredClass] = []
 
 
-func _init() -> void:
+func _enter_tree() -> void:
 	# Register classes from this plugin
-	for cls_name in ModSystemUtils.Scripts.keys():
-		register(cls_name, ModSystemUtils.Scripts[cls_name])
+	for script in ModSystemUtils.Scripts.values():
+		register(script)
 
 
-## Registers a named class and returns a generated [RegisteredClass] object.
-func register(cls_name: StringName, cls: Script) -> RegisteredClass:
-	if not is_class_name_registered(cls_name):
-		var parent_name := ScriptUtils.get_extended_class(cls)
-		var registered_class := RegisteredClass.new(cls_name, cls, get_by_name(parent_name))
+## Registered a class and returns a generated [RegisteredClass] object.
+func register(script: GDScript) -> RegisteredClass:
+	if not is_script_registered(script):
+		var registered_class = RegisteredClass.from_script(script)
 		registered_classes.append(registered_class)
 		class_registered.emit(registered_class)
 		return registered_class
-	return get_by_name(cls_name)
+	return get_by_script(script)
 
 
 ## Unregisters a class.
@@ -43,23 +42,6 @@ func unregister(cls: StringName) -> void:
 		if registered_class:
 			registered_classes.erase(registered_class)
 			class_unregistered.emit(registered_class)
-
-
-## Registers an unnamed class at the classes' script path and returns a generated [RegisteredClass]
-## object.
-func register_object(cls: Object) -> RegisteredClass:
-	var cls_script: Script = cls.get_script()
-	if not cls_script.resource_path.is_empty():
-		return register(cls_script.resource_path, cls_script)
-	return null
-
-
-## Registered a class (with an optional name) and returns a generated [RegisteredClass] object.
-func register_script(script: GDScript, cls_name: StringName = &"") -> RegisteredClass:
-	return register(
-		script.resource_path if cls_name.is_empty() else cls_name,
-		script,
-	)
 
 
 ## Returns [code]true[/code] if the provided class name is registered.

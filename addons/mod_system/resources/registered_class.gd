@@ -21,6 +21,18 @@ func _init(name_value: StringName, cls_value: Script, parent_value: RegisteredCl
 	parent = parent_value
 
 
+## Constructs a new [RegisteredClass] by parsing the [member name] from the [GDScript]'s 
+## [code]class_name[/code] if it exists (otherwise the [member GDScript.resource_path]) and the
+## parent by parsing the [code]extends[/code] class
+static func from_script(script: GDScript) -> RegisteredClass:
+	var name := ScriptUtils.get_class_name(script)
+	return RegisteredClass.new(
+		script.resource_path if name.is_empty() else name,
+		script,
+		ModClassDB.get_by_name(ScriptUtils.get_extended_class(script))
+	)
+
+
 ## Returns [code]true[/code] if the [member parent] (or the parent's [member parent], etc.)
 ## is the [code]ancestor[/code].
 func has_ancestor(ancestor: RegisteredClass) -> bool:

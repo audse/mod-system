@@ -4,7 +4,7 @@ extends Node
 ## Handles loading and registering mods from the file system
 
 
-func _init() -> void:
+func _ready() -> void:
 	load_all_mods()
 
 
