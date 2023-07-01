@@ -36,7 +36,7 @@ class_name ModSettings extends Resource
 
 ## The path that this resource will be saved (see [member ProjectSettings."mod_system/mod_settings_save_path"]) 
 static var save_path: String:
-	get: return ModSystemUtils.get_setting(ModSystemUtils.Settings.ModSettingsSavePath)
+	get: return ModSystemProjectSettings.get_mod_settings_save_path()
 
 
 func _init() -> void:
@@ -81,7 +81,7 @@ func disable_mod(mod: Mod) -> void:
 ## Saves this resource (see [member save_path])
 func save() -> void:
 	ResourceSaver.save(self, save_path)
-	ModSystemUtils.logs("Settings saved")
+	ModSystemLogger.logs("Settings saved")
 
 
 ## Loads the resource, if it exists. Otherwise, creates a new settings file (see [member save_path])

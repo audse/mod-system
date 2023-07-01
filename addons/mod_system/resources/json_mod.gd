@@ -41,7 +41,7 @@ func _init(json_path_value: String, json: Dictionary) -> void:
 	var thumbnail_path: String = meta.get("thumbnail", "")
 	if not thumbnail_path.is_empty():
 		var path := to_absolute_path(thumbnail_path)
-		thumbnail = ModAsset.load_image(path)
+		thumbnail = ModSystemResourceLoader.load_image(path, true)
 	
 	
 	super._init()
@@ -67,8 +67,8 @@ func load_instance_script(path: String) -> ModScript:
 func load_asset(key: String, relative_path: String, type: String = "resource") -> ModAsset:
 	var path := to_absolute_path(relative_path)
 	match type.to_lower():
-		"resource": return ModAsset.create(key, ModAsset.load_resource(path))
-		"image": return ModAsset.create(key, ModAsset.load_image(path))
+		"resource": return ModAsset.create(key, ModSystemResourceLoader.load_resource(path))
+		"image": return ModAsset.create(key, ModSystemResourceLoader.load_image(path, true))
 		_: return null
 
 

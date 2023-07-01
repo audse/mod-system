@@ -32,6 +32,7 @@ enabled=PackedStringArray("res://addons/mod_system/plugin.cfg")
 
 mod_settings_save_path="user://mod_settings.tres"
 mod_paths="user://mods, res://tmp"
+mod_dirs="user://mods"
 
 [rendering]
 

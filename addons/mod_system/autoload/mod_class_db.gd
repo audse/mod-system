@@ -19,9 +19,21 @@ signal class_unregistered(cls: RegisteredClass)
 var registered_classes: Array[RegisteredClass] = []
 
 
+const _Scripts := {
+	&"Mod": preload("../resources/mod.gd"),
+	&"ModInstanceScript": preload("../resources/mod_instance_script.gd"),
+	&"ModAsset": preload("../resources/mod_asset.gd"),
+	&"ModInstance": preload("../resources/mod_instance.gd"),
+	&"RegisteredClass": preload("../resources/registered_class.gd"),
+	&"ModSettings": preload("../resources/mod_settings.gd"),
+	&"ModLoader": preload("mod_loader.gd"),
+	&"ModSystem": preload("mod_system.gd"),
+}
+
+
 func _enter_tree() -> void:
 	# Register classes from this plugin
-	for script in ModSystemUtils.Scripts.values():
+	for script in ModClassDB._Scripts.values():
 		register(script)
 
 

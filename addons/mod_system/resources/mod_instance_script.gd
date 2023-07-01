@@ -38,7 +38,7 @@ func _init(instance_value: ModInstance) -> void:
 ## to the terminal with contextual information about the current [Mod].
 ## (in [member instance], see [member ModInstance.mod])
 func logs(message: String) -> void:
-	ModSystemUtils.mod_log(instance.mod, message)
+	ModSystemLogger.mod_log(instance.mod, message)
 
 
 ## Virtual method. Called when the mod is granted to the owner.

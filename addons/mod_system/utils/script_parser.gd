@@ -1,4 +1,4 @@
-class_name ScriptUtils extends Object
+class_name ModScriptParser extends Object
 
 
 

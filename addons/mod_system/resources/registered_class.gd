@@ -25,11 +25,11 @@ func _init(name_value: StringName, cls_value: Script, parent_value: RegisteredCl
 ## [code]class_name[/code] if it exists (otherwise the [member GDScript.resource_path]) and the
 ## parent by parsing the [code]extends[/code] class
 static func from_script(script: GDScript) -> RegisteredClass:
-	var cls_name := ScriptUtils.get_class_name(script)
+	var cls_name := ModScriptParser.get_class_name(script)
 	return RegisteredClass.new(
 		script.resource_path if cls_name.is_empty() else cls_name,
 		script,
-		ModClassDB.get_by_name(ScriptUtils.get_extended_class(script))
+		ModClassDB.get_by_name(ModScriptParser.get_extended_class(script))
 	)
 
 

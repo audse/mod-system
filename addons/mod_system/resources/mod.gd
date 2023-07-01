@@ -100,22 +100,22 @@ func get_asset(key: String) -> ModAsset:
 
 ## Called when [signal registered] is emitted.
 func _on_registered() -> void:
-	ModSystemUtils.mod_log(self, "Registered")
+	ModSystemLogger.mod_log(self, "Registered")
 
 
 ## Called when [signal unregistered] is emitted.
 func _on_unregistered() -> void:
-	ModSystemUtils.mod_log(self, "Unregistered")
+	ModSystemLogger.mod_log(self, "Unregistered")
 
 
 ## Called when [signal enabled] is emitted.
 func _on_enabled() -> void:
-	ModSystemUtils.mod_log(self, "Enabled")
+	ModSystemLogger.mod_log(self, "Enabled")
 
 
 ## Called when [signal disabled] is emitted.
 func _on_disabled() -> void:
-	ModSystemUtils.mod_log(self, "Disabled")
+	ModSystemLogger.mod_log(self, "Disabled")
 
 
 ## Returns a [String] that idenitifies this mod, usually the file path
