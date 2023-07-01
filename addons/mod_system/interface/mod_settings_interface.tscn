@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxucnwe7qbyih"]
+
+[ext_resource type="Script" path="res://addons/mod_system/interface/mod_settings_interface.gd" id="1_yu2nh"]
+[ext_resource type="Script" path="res://addons/mod_system/interface/enabled_mods_list.gd" id="2_0a7u6"]
+
+[node name="ModSettingsInterface" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+script = ExtResource("1_yu2nh")
+
+[node name="ModsEnabledCheckBox" type="CheckBox" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Allow modding"
+
+[node name="CheatModsEnabledCheckBox" type="CheckBox" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Allow cheat mods"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 2
+bbcode_enabled = true
+text = "[b]Installed mods[/b]"
+fit_content = true
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="EnabledMods" type="VBoxContainer" parent="PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("2_0a7u6")

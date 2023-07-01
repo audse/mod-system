@@ -38,6 +38,12 @@ func _init(json_path_value: String, json: Dictionary) -> void:
 	version = meta.get("version", "")
 	url = meta.get("url", "")
 	
+	var thumbnail_path: String = meta.get("thumbnail", "")
+	if not thumbnail_path.is_empty():
+		var path := to_absolute_path(thumbnail_path)
+		thumbnail = ModAsset.load_image(path)
+	
+	
 	super._init()
 
 

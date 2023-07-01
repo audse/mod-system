@@ -44,7 +44,7 @@ static func mod_log(mod: Mod, message: String) -> void:
 	)
 
 
-static func log(message: String) -> void:
+static func logs(message: String) -> void:
 	if ModSystem and ModSystem.settings.enable_logging: print_rich(
 		"[color=gray][ModSystem][/color] [color=white]{message}[/color]".format({ 
 			message = message 

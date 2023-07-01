@@ -23,7 +23,7 @@ func load_mod(path: String) -> Mod:
 			return resource
 	elif path.ends_with(".mod.json"):
 		var file := FileAccess.get_file_as_string(path)
-		var json := JSON.parse_string(file)
+		var json: Dictionary = JSON.parse_string(file)
 		var mod: JsonMod = JsonMod.new(path, json)
 		ModSystem.register(mod)
 		return mod

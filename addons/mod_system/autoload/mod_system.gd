@@ -26,8 +26,8 @@ signal mod_revoked(instance: ModInstance)
 ## An [Array][[Mod]] of currently registered mods.
 var registered_mods: Array[Mod] = []
 
-## The [ModSettings] object for the current user (see [method ModSettings.load]).
-var settings: ModSettings = ModSettings.load()
+## The [ModSettings] object for the current user (see [method ModSettings.load_settings]).
+var settings: ModSettings = ModSettings.load_settings()
 
 
 ## This is a helper function that does two things:

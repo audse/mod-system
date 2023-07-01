@@ -17,10 +17,10 @@ class_name ModAsset extends Resource
 
 ## Constructs a new [ModAsset] with a given key and asset.
 static func create(key_value: String, asset_value: Resource) -> ModAsset:
-	var asset := ModAsset.new()
-	asset.key = key_value
-	asset.asset = asset_value
-	return asset
+	var mod_asset := ModAsset.new()
+	mod_asset.key = key_value
+	mod_asset.asset = asset_value
+	return mod_asset
 
 
 ## Returns a [Resource] at the given [code]path[/code], if it exists. Otherwise, returns [code]null[/code].

@@ -45,11 +45,7 @@ func _init() -> void:
 
 ## Returns [code]true[/code] if the given mod is enabled (see [member enabled_mods])
 func is_enabled(mod: Mod) -> bool:
-	return (
-		are_mods_enabled
-		and mod.get_identifier() in enabled_mods
-		and (are_cheats_enabled if mod.is_cheat else true)
-	)
+	return mod.get_identifier() in enabled_mods
 
 
 ## Returns [code]true[/code] if a given mod can be enabled
@@ -85,11 +81,11 @@ func disable_mod(mod: Mod) -> void:
 ## Saves this resource (see [member save_path])
 func save() -> void:
 	ResourceSaver.save(self, save_path)
-	ModSystemUtils.log("Settings saved")
+	ModSystemUtils.logs("Settings saved")
 
 
 ## Loads the resource, if it exists. Otherwise, creates a new settings file (see [member save_path])
-static func load() -> ModSettings:
+static func load_settings() -> ModSettings:
 	if ResourceLoader.exists(save_path):
 		return ResourceLoader.load(save_path)
 	return ModSettings.new()

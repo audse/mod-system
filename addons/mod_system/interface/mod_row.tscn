@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=3 uid="uid://cwtn2vl8pda6h"]
+
+[ext_resource type="Script" path="res://addons/mod_system/interface/mod_row.gd" id="1_e7kc1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n24si"]
+content_margin_left = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_imk66"]
+content_margin_left = 6.0
+content_margin_right = 6.0
+bg_color = Color(1, 1, 1, 0.0980392)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="ModRowContainer" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+script = ExtResource("1_e7kc1")
+
+[node name="CheckBox" type="CheckBox" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Thumbnail" type="TextureRect" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 2.08165e-12)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 2.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_n24si")
+bbcode_enabled = true
+text = "[b]MyModName[/b] [color=#fffa]v1.0.0[/color]
+[color=#fffa]Jane Doe[/color]"
+fit_content = true
+
+[node name="CheatLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_imk66")
+text = "cheat"
