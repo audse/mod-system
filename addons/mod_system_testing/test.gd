@@ -19,7 +19,7 @@ class Result:
 		})
 		return "{description}...{result}".format({
 			description = description,
-			result = "[color=green]ok[/color]" if is_ok else "[color=magenta]failed![/color]"
+			result = "[color=green]ok[/color]" if is_ok else "[color=red]failed![/color]"
 		})
 
 

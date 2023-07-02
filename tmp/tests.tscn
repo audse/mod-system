@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://gphdxdrvulxm"]
+[gd_scene load_steps=6 format=3 uid="uid://gphdxdrvulxm"]
 
 [ext_resource type="Script" path="res://addons/mod_system_testing/tests/test_mod_path.gd" id="1_yw1ap"]
 [ext_resource type="Script" path="res://addons/mod_system_testing/tests/test_mod_script_parser.gd" id="2_mf1ta"]
 [ext_resource type="Script" path="res://addons/mod_system_testing/tests/test_mod_system_project_settings.gd" id="3_jpqro"]
 [ext_resource type="Script" path="res://addons/mod_system_testing/tests/test_mod_system_resource_loader.gd" id="4_b4sqr"]
+[ext_resource type="Script" path="res://addons/mod_system_testing/tests/test_mod_class_db.gd" id="5_thvhu"]
 
 [node name="Tests" type="Node"]
 
@@ -20,3 +21,6 @@ script = ExtResource("3_jpqro")
 
 [node name="Test_ModSystemResourceLoader" type="Node" parent="Test_Utils"]
 script = ExtResource("4_b4sqr")
+
+[node name="Test_ModClassDB" type="Node" parent="."]
+script = ExtResource("5_thvhu")
