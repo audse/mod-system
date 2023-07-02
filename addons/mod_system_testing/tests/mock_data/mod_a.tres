@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Mod" load_steps=2 format=3 uid="uid://du8xyhrrv4gmi"]
+
+[ext_resource type="Script" path="res://addons/mod_system/resources/mod.gd" id="1_degml"]
+
+[resource]
+script = ExtResource("1_degml")
+requires_restart = false
+is_cheat = false
+grantable_owners = null
+assets = Array[Resource("res://addons/mod_system/resources/mod_asset.gd")]([])
+name = "Mod A"
+author = ""
+version = "1.0.0"
+url = ""

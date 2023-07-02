@@ -39,4 +39,3 @@ func revoke() -> void:
 		mod.instances.erase(owner)
 		mod.revoked.emit(self)
 		ModSystem.mod_revoked.emit(self)
-	free()
