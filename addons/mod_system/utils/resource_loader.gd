@@ -54,8 +54,10 @@ static func load_json(path: String) -> Dictionary:
 
 ## Creates a [JsonMod] from the JSON dictionary at the given [code]path[/code].
 static func load_json_mod(path: String) -> JsonMod:
-	var json := ModSystemResourceLoader.load_json(path)
-	return JsonMod.new(path, json)
+	if FileAccess.file_exists(path):
+		var json := ModSystemResourceLoader.load_json(path)
+		return JsonMod.new(path, json)
+	else: return null
 
 
 ## Loads a mod at the given [code]path[/code].

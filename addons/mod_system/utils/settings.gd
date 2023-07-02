@@ -56,6 +56,11 @@ static func _get_setting(setting: Dictionary):
 	return setting.Default
 
 
+static func _set_setting(setting: Dictionary, value):
+	if ProjectSettings.has_setting(setting.Path):
+		ProjectSettings.set_setting(setting.Path, value)
+
+
 ## Returns an [Array][[String]] of all directories listed in [member ProjectSettings."mod_system/mod_dirs"].
 static func get_mod_dirs() -> PackedStringArray:
 	var mod_dirs := PackedStringArray([])
@@ -65,6 +70,22 @@ static func get_mod_dirs() -> PackedStringArray:
 	return mod_dirs
 
 
+## Sets  [member ProjectSettings."mod_system/mod_dirs"] to the provided value.
+static func set_mod_dirs(dirs: PackedStringArray) -> void:
+	ModSystemProjectSettings._set_setting(
+		ModSystemProjectSettings.Settings.ModDirs, 
+		", ".join(dirs)
+	)
+
+
 ## Returns the [ModSettings] save path from [member ProjectSettings."mod_system/mod_settings_save_path"].
 static func get_mod_settings_save_path() -> String:
 	return ModSystemProjectSettings._get_setting(ModSystemProjectSettings.Settings.ModSettingsSavePath)
+
+
+## Sets [member ProjectSettings."mod_system/mod_settings_save_path"] to the provided value.
+static func set_mod_settings_save_path(save_path: String) -> void:
+	ModSystemProjectSettings._set_setting(
+		ModSystemProjectSettings.Settings.ModSettingsSavePath, 
+		save_path
+	)

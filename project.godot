@@ -26,7 +26,7 @@ project/assembly_name="ModSystem"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/mod_system/plugin.cfg")
+enabled=PackedStringArray("res://addons/mod_system/plugin.cfg", "res://addons/mod_system_testing/plugin.cfg")
 
 [mod_system]
 
