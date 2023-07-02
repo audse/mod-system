@@ -4,6 +4,8 @@
 
 ModSystem is a plugin for Godot 4 that provides a framework for extending and modifying game functionality through mods.
 
+**Note**: This addon is not production-ready yet.
+
 ## Features
 
 - Automatically discover and load installed mods on game start
