@@ -14,7 +14,7 @@ var cls: Script
 var parent: RegisteredClass = null
 
 
-## Constructs a new [RegisteredClass] with the given [member name], [member cls], and [member parent]
+## Constructs a new [RegisteredClass] with the given [member name], [member cls], and [member parent].
 func _init(name_value: StringName, cls_value: Script, parent_value: RegisteredClass = null) -> void:
 	name = name_value
 	cls = cls_value
@@ -23,7 +23,7 @@ func _init(name_value: StringName, cls_value: Script, parent_value: RegisteredCl
 
 ## Constructs a new [RegisteredClass] by parsing the [member name] from the [GDScript]'s 
 ## [code]class_name[/code] if it exists (otherwise the [member GDScript.resource_path]) and the
-## parent by parsing the [code]extends[/code] class
+## parent by parsing the [code]extends[/code] class.
 static func from_script(script: GDScript) -> RegisteredClass:
 	var cls_name := ModScriptParser.get_class_name(script)
 	return RegisteredClass.new(
@@ -33,10 +33,31 @@ static func from_script(script: GDScript) -> RegisteredClass:
 	)
 
 
+## Constructs a new [RegisteredClass] from the provided name, the provided script, and the parent 
+## (by parsing the [code]extends[/code] class).
+static func from_named_script(cls: StringName, script: GDScript) -> RegisteredClass:
+	return RegisteredClass.new(
+		cls,
+		script,
+		ModClassDB.get_by_name(ModScriptParser.get_extended_class(script))
+	)
+
+
 ## Returns [code]true[/code] if the [member parent] (or the parent's [member parent], etc.)
 ## is the [code]ancestor[/code].
 func has_ancestor(ancestor: RegisteredClass) -> bool:
-	return (
-		ancestor == parent
-		or (parent.has_ancestor(ancestor) if parent else false)
+	if parent: return (
+		ancestor.name == parent.name 
+		or parent.has_ancestor(ancestor)
 	)
+	return false
+
+
+func _to_string() -> String:
+	return "<RegisteredClass:{0})>".format([
+		JSON.stringify({
+			name = name,
+			script = cls.resource_path,
+			parent = parent,
+		}, "  ", false)
+	])

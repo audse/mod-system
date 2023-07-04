@@ -75,3 +75,7 @@ func load_asset(key: String, relative_path: String, type: String = "resource") -
 ## Returns a [String] that idenitifies this mod, usually the file path
 func get_identifier() -> String:
 	return json_path
+
+
+func _to_string() -> String:
+	return "<Mod:{0}[\"{1}\"]>".format([name, json_path])

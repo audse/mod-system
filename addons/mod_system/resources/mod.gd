@@ -121,3 +121,7 @@ func _on_disabled() -> void:
 ## Returns a [String] that idenitifies this mod, usually the file path
 func get_identifier() -> String:
 	return resource_path
+
+
+func _to_string() -> String:
+	return "<Mod:{0}[{1}]>".format([name, resource_path])

@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="ModSystem"
+run/main_scene="res://tmp/main.tscn"
 config/features=PackedStringArray("4.1", "Mobile")
 config/icon="res://icon.svg"
 
@@ -31,8 +32,7 @@ enabled=PackedStringArray("res://addons/mod_system/plugin.cfg", "res://addons/mo
 [mod_system]
 
 mod_settings_save_path="user://mod_settings.tres"
-mod_paths="user://mods, res://tmp"
-mod_dirs="user://mods"
+mod_dirs="user://mods, res://example_mod"
 
 [rendering]
 

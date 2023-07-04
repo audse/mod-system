@@ -22,6 +22,11 @@ var registered_classes: Array[RegisteredClass] = []
 const _Scripts := {
 	&"Mod": preload("../resources/mod.gd"),
 	&"ModInstanceScript": preload("../resources/mod_instance_script.gd"),
+	&"ModInstanceScript.ResourceBase": preload("../resources/mod_instance_script/resource.gd"),
+	&"ModInstanceScript.ObjectBase": preload("../resources/mod_instance_script/object.gd"),
+	&"ModInstanceScript.NodeBase": preload("../resources/mod_instance_script/node.gd"),
+	&"ModInstanceScript.ControlBase": preload("../resources/mod_instance_script/control.gd"),
+	&"ModInstanceScript.ButtonBase": preload("../resources/mod_instance_script/base_button.gd"),
 	&"ModAsset": preload("../resources/mod_asset.gd"),
 	&"ModInstance": preload("../resources/mod_instance.gd"),
 	&"RegisteredClass": preload("../resources/registered_class.gd"),
@@ -33,18 +38,28 @@ const _Scripts := {
 
 func _enter_tree() -> void:
 	# Register classes from this plugin
-	for script in ModClassDB._Scripts.values():
-		register(script)
+	for cls in ModClassDB._Scripts.keys():
+		register_with_name(cls, ModClassDB._Scripts[cls])
 
 
 ## Registered a class and returns a generated [RegisteredClass] object.
 func register(script: GDScript) -> RegisteredClass:
 	if not is_script_registered(script):
-		var registered_class = RegisteredClass.from_script(script)
+		var registered_class := RegisteredClass.from_script(script)
 		registered_classes.append(registered_class)
 		class_registered.emit(registered_class)
 		return registered_class
 	return get_by_script(script)
+
+
+## Registered a class with a given name and returns a generated [RegisteredClass] object.
+func register_with_name(cls: StringName, script: GDScript) -> RegisteredClass:
+	if not is_class_name_registered(cls):
+		var registered_class := RegisteredClass.from_named_script(cls, script)
+		registered_classes.append(registered_class)
+		class_registered.emit(registered_class)
+		return registered_class
+	return get_by_name(cls)
 
 
 ## Unregisters a class.

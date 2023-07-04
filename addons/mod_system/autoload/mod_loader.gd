@@ -3,6 +3,12 @@ extends Node
 
 ## Handles loading and registering mods from the file system
 
+## Emitted when all mods have been loaded and registered
+signal finished_loading
+
+## If [code]true[/code], all mods have been loaded and registered
+var is_finished_loading: bool = false
+
 
 func _ready() -> void:
 	load_all_mods()
@@ -12,6 +18,8 @@ func _ready() -> void:
 ## and loads/registers them (see [method load_mod] and [method ModSystem.register]).
 func load_all_mods() -> void:
 	discover_mod_paths(ModSystemProjectSettings.get_mod_dirs()).map(load_mod)
+	is_finished_loading = true
+	finished_loading.emit()
 
 
 ## Loads a mod at the given [code]path[/code] and registers it (see [method ModSystem.register]).

@@ -29,6 +29,10 @@ var registered_mods: Array[Mod] = []
 ## The [ModSettings] object for the current user (see [method ModSettings.load_settings]).
 var settings: ModSettings = ModSettings.load_settings()
 
+func _after_finished_loading():
+	if not ModLoader.is_finished_loading:
+		await ModLoader.finished_loading
+
 
 ## This is a helper function that does two things:
 ## [br]1. Registers [code]mod_owner[/code] to [ModClassDB]. This must be done in order to grant mods.
@@ -37,6 +41,7 @@ var settings: ModSettings = ModSettings.load_settings()
 ## the [code]_init[/code] function to any class that you want to be able to grant mods to.
 func initialize(mod_owner: Object) -> void:
 	ModClassDB.register(mod_owner.get_script())
+	await _after_finished_loading()
 	grant_all(mod_owner)
 
 
@@ -58,10 +63,17 @@ func unregister(mod: Mod) -> void:
 
 ## If possible, enables the given [Mod]. See [method ModSettings.enable_mod].
 func enable(mod: Mod) -> void:
+	await _after_finished_loading()
 	if mod in registered_mods and settings.can_enable(mod):
 		settings.enable_mod(mod)
 		mod_enabled.emit(mod)
 		mod.enabled.emit()
+
+
+## Enables all [member registered_mods]. See [method enable].
+func enable_all() -> void:
+	await _after_finished_loading()
+	registered_mods.map(enable)
 
 
 ## If possible, disables the given [Mod]. See [method ModSettings.disable_mod].
@@ -70,11 +82,6 @@ func disable(mod: Mod) -> void:
 		settings.disable_mod(mod)
 		mod_disabled.emit(mod)
 		mod.disabled.emit()
-
-
-## Enables all [member registered_mods]. See [method enable].
-func enable_all() -> void:
-	registered_mods.map(enable)
 
 
 ## Disables all [member registered_mods]. See [method disable].

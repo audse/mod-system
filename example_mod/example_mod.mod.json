@@ -1,0 +1,19 @@
+{
+	"meta": {
+		"name": "ExampleMod",
+		"author": "Audrey Serene",
+		"version": "1.0.0",
+		"thumbnail": "assets/example_mod_thumbnail.svg"
+	},
+	"grantable_owners": [
+		"ExampleModButton"
+	],
+	"instance_script": "scripts/example_mod_script.gd",
+	"assets": [
+		{
+			"key": "robot",
+			"type": "image",
+			"asset": "assets/robot.svg"
+		}
+	]
+}

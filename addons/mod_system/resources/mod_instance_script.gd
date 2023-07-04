@@ -6,6 +6,7 @@ class_name ModInstanceScript extends Resource
 ## be called in-game and be able to effect gameplay. See [member Mod.instance_script].
 
 
+const ButtonBase := preload("mod_instance_script/base_button.gd")
 const ControlBase := preload("mod_instance_script/control.gd")
 const NodeBase := preload("mod_instance_script/node.gd")
 const ObjectBase := preload("mod_instance_script/object.gd")
