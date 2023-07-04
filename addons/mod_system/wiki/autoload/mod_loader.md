@@ -1,62 +1,100 @@
-Certainly! Here's the wiki page for the `ModLoader` class:
-
 # ModLoader
 
-The `ModLoader` class is responsible for loading and registering mods. It recursively searches for mod files within the directories specified in the `ProjectSettings."mod_system/mod_paths"` property, loads the mods, and registers them using the `ModSystem.register` method. Mod files can have either the `.mod.tres` or `.mod.json` extension.
+[**See the code at `mod_loader.gd`**](https://github.com/audse/mod-system/tree/main/addons/mod_system/autoload/mod_loader.gd)
 
-Please note that the `ModLoader` class is designed to work in conjunction with the `ModSystem` class, which manages the overall functionality and behavior of mods in the game.
+## Description
 
-## Inherits
+**Inherits `Node`**
 
-`Node`
+The `ModLoader` class is a singleton responsible for loading mods. Upon game start, this class:
+
+1. Recursively searches for mod files (`.mod.tres` or `.mod.json` files) within the directories specified in the `ProjectSettings."mod_system/mod_paths"` property
+2. Loads the mods it found
+3. Communicates with `ModSystem` to register them using the `ModSystem.register` method.
+
+The `ModLoader` class is designed to work in conjunction with the `ModSystem` class, which manages the overall functionality and behavior of mods in the game.
+
+***
 
 ## Signals
 
-None
+### finished_loading
+
+```gdscript
+signal finished_loading
+```
+
+This signal is emitted when all mods have been loaded and registered.
+
+***
 
 ## Properties
 
-None
+### is_finished_loading
+
+```gdscript
+var registered_mods: Array[Mod]
+```
+
+If `true`, all mods have been loaded and registered.
+
+**Type**
+
+`bool`
+
+
+***
 
 ## Methods
 
-### `_ready(): void`
+### load_all_mods
 
-- **Description**: Called when the node and its children are ready, after the scene tree's initialization.
-- **Parameters**: None
-- **Returns**: void
+```gdscript
+func load_all_mods() -> void
+```
 
-### `load_all_mods(): void`
+Recursively finds all mod paths that end with `.mod.tres` or `.mod.json`, loads them, and registers them using the `ModSystem.register` method.
 
-- **Description**: Recursively finds all mod paths that end with `.mod.tres` or `.mod.json`, loads them, and registers them using the `ModSystem.register` method.
-- **Parameters**: None
-- **Returns**: void
+***
 
-### `load_mod(path: String): Mod`
+### load_mod
 
-- **Description**: Loads a mod at the specified `path` and registers it using the `ModSystem.register` method.
-- **Parameters**:
-  - `path` (String): The file path of the mod to load.
-- **Returns**: Mod or null
+```gdscript
+func load_mod(path: String) -> Mod
+```
 
-### `get_mod_paths(dirs: Array[String]): Array[String]`
+Loads a mod at the specified `path` and registers it using the `ModSystem.register` method.
 
-- **Description**: Retrieves an array of all mod paths that end with `.mod.tres` or `.mod.json` within the directories listed in the `ProjectSettings."mod_system/mod_paths"` property.
-- **Parameters**:
-  - `dirs` (Array[String]): An array of directories to search for mod paths.
-- **Returns**: Array[String]
+**Parameters**
 
-### `get_mod_dirs(): Array[String]`
+| Name   | Type     | Description                       |
+| ------ | -------- | --------------------------------- |
+| `path` | `String` | The file path of the mod to load. |
 
-- **Description**: Retrieves an array of all directories listed in the `ProjectSettings."mod_system/mod_paths"` property.
-- **Parameters**: None
-- **Returns**: Array[String]
+**Returns**
 
-### `is_mod_path(path: String): bool`
+| Type                   | Description     |
+| ---------------------- | --------------- |
+| [`Mod`](Mod) or `null` | The loaded mod. |
 
-- **Description**: Checks if the specified `path` is in the format `*.mod.tres` or `*.mod.json`.
-- **Parameters**:
-  - `path` (String): The path to check.
-- **Returns**: bool
+***
 
----
+### discover_mod_paths
+
+```gdscript
+func discover_mod_paths(dirs: Array[String]) -> Array[String]
+```
+
+Recursively searches each listed directory for mods and returns a list of all paths to mods.
+
+**Parameters**
+
+| Name   | Type              | Description                         |
+| ------ | ----------------- | ----------------------------------- |
+| `dirs` | `Array`[`String`] | The directories to search for mods. |
+
+**Returns**
+
+| Type              | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `Array`[`String`] | Returns all paths to mods within the listed `dirs` (recursively). |

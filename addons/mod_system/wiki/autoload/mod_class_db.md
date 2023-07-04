@@ -1,83 +1,216 @@
 # ModClassDB
 
-The `ModClassDB` class serves as a database of all classes registered to the Mod System. It provides methods for registering and unregistering classes, as well as querying the registered classes. 
+[**See the code at `mod_class_db.gd`**](https://github.com/audse/mod-system/tree/main/addons/mod_system/autoload/mod_class_db.gd)
 
-The `ModClassDB` allows the Mod System to keep track of classes that can be extended or modified by mods.
+## Description
 
-Game developers who want their classes to be modifiable through the Mod System need to ensure that they register their classes with the ModClassDB so that mods can interact with them.
+**Inherits `Node`**
+
+The `ModClassDB` class is a **singleton** that serves as a database of all classes registered to ModSystem. It provides methods for registering classes, unregistering classes, and querying registered classes. 
+
+This class allows ModSystem to keep track of classes that can be extended, modified, or referenced by mods.
+
+Game developers who want their classes to be modifiable through ModSystem need to ensure that they register their classes with the `ModClassDB` so that mods can interact with them.
+
+***
 
 ## Signals
 
-### signal class_registered(cls: RegisteredClass)
+### class_registered
 
-- **Description**: This signal is emitted when a class is registered to the Mod System.
-- **Parameters**:
-  - `cls` (RegisteredClass): The registered class.
+```gdscript
+signal class_registered(cls: RegisteredClass)
+```
 
-### signal class_unregistered(cls: RegisteredClass)
+This signal is emitted when a class is registered to `ModClassDB`.
 
-- **Description**: This signal is emitted when a class is unregistered from the Mod System.
-- **Parameters**:
-  - `cls` (RegisteredClass): The unregistered class.
+**Parameters**
+
+| Name  | Type                   | Description                |
+| :---- | :--------------------- | :------------------------- |
+| `cls` | [`RegisteredClass`](#) | The just-registered class. |
+
+***
+
+### class_unregistered
+
+```gdscript
+signal class_unregistered(cls: RegisteredClass)
+```
+
+This signal is emitted when a class is unregistered from `ModClassDB`.
+
+**Parameters**
+
+| Name  | Type                   | Description                  |
+| :---- | :--------------------- | :--------------------------- |
+| `cls` | [`RegisteredClass`](#) | The just-unregistered class. |
+
+---
 
 ## Properties
 
-### var registered_classes: Array[RegisteredClass]
+### registered_classes
 
-- **Description**: An array that holds the registered classes.
-- **Type**: Array[RegisteredClass]
+```gdscript
+var registered_classes: Array[RegisteredClass]
+```
+
+An array that holds the current registered classes.
+
+**Type**
+
+`Array`[[`RegisteredClass`](#)]
+
+---
 
 ## Methods
 
-### func _register_plugin() -> void
+### register
 
-- **Description**: Internal method called during plugin initialization to set up the ModClassDB.
-- **Returns**: void
+```gdscript
+func register(script: GDScript) -> RegisteredClass
+```
 
-### func register(script: GDScript) -> RegisteredClass
+Registers a class to `ModClassDB`, enabling use in ModSystem.
 
-- **Description**: Registers a class with the Mod System.
-- **Parameters**:
-  - `script` (GDScript) -> The GDScript script of the class to register.
-- **Returns**: RegisteredClass - The registered class.
-- **Note**: The `script` parameter should be the GDScript representing the class to be registered. This method creates a `RegisteredClass` object for the class and adds it to the `registered_classes` array. The `class_registered` signal is emitted after successful registration.
+This method creates a [`RegisteredClass`](#) object for the class and adds it to the [`registered_classes`](#registered_classes) array. The [`class_registered`](#class_registered) signal is emitted after registration.
 
-### unregister(cls: StringName) -> void
+**Parameters**
+| Name     | Type       | Description                                   |
+| :------- | :--------- | :-------------------------------------------- |
+| `script` | `GDScript` | The GDScript script of the class to register. |
 
-- **Description**: Unregisters a class from the Mod System.
-- **Parameters**:
-  - `cls` (StringName): The name of the class to unregister.
-- **Returns**: void
-- **Note**: The `cls` parameter should be the name of the class to unregister. This method removes the corresponding `RegisteredClass` object from the `registered_classes` array. The `class_unregistered` signal is emitted after successful unregistration.
+**Returns**
+| Type                   | Description                |
+| :--------------------- | :------------------------- |
+| [`RegisteredClass`](#) | The just-registered class. |
 
-### is_class_name_registered(cls: StringName) -> bool
+***
 
-- **Description**: Checks if a class name is registered with the Mod System.
-- **Parameters**:
-  - `cls` (StringName): The name of the class to check.
-- **Returns**: bool - `true` if the class name is registered, `false` otherwise.
-- **Note**: The `cls` parameter should be the name of the class to check. This method searches the `registered_classes` array for a matching class name and returns the result.
+### register_with_name
 
-### is_script_registered(cls: Script) -> bool
+```gdscript
+func register_with_name(cls: StringName, script: GDScript) -> RegisteredClass
+```
 
-- **Description**: Checks if a script is registered with the Mod System.
-- **Parameters**:
-  - `cls` (Script): The script to check.
-- **Returns**: bool - `true` if the script is registered, `false` otherwise.
-- **Note**: The `cls` parameter should be the script to check. This method searches the `registered_classes` array for a matching script and returns the result.
+Registers a class to `ModClassDB` with the given name, enabling use in ModSystem.
 
-### get_by_name(cls: StringName) -> RegisteredClass
+This method creates a [`RegisteredClass`](#) object for the class and adds it to the [`registered_classes`](#registered_classes) array. The [`class_registered`](#class_registered) signal is emitted after registration.
 
-- **Description**: Retrieves a registered class by its name.
-- **Parameters**:
-  - `cls` (StringName): The name of the class to retrieve.
-- **Returns**: RegisteredClass - The registered class.
-- **Note**: The `cls` parameter should be the name of the class to retrieve. This method searches the `registered_classes` array for a matching class name and returns the corresponding `RegisteredClass` object.
+**Parameters**
+| Name     | Type         | Description                                                                  |
+| :------- | :----------- | :--------------------------------------------------------------------------- |
+| `cls`    | `StringName` | The name to use when registering the class. See [`RegisteredClass.name`](#). |
+| `script` | `GDScript`   | The GDScript script of the class to register.                                |
 
-### get_by_script(cls: Script) -> RegisteredClass
+**Returns**
+| Type                   | Description                |
+| :--------------------- | :------------------------- |
+| [`RegisteredClass`](#) | The just-registered class. |
 
-- **Description**: Retrieves a registered class by its script.
-- **Parameters**:
-  - `cls` (Script): The script to retrieve.
-- **Returns**: RegisteredClass - The registered class.
-- **Note**: The `cls` parameter should be the script to retrieve. This method searches the `registered_classes` array for a matching script and returns the corresponding `RegisteredClass` object.
+***
+
+### unregister
+
+```gdscript
+func unregister(cls: StringName) -> void
+```
+
+Unregisters a class from `ModClassDB`, disabling use in ModSystem.
+
+This method removes the corresponding [`RegisteredClass`](#) object from the [`registered_classes`](#registered_classes) array. The [`class_unregistered`](#class_unregistered) signal is emitted after unregistration.
+
+**Parameters**
+
+| Name  | Type         | Description                          |
+| :---- | :----------- | :----------------------------------- |
+| `cls` | `StringName` | The name of the class to unregister. |
+
+***
+
+### is_class_name_registered
+
+```gdscript
+func is_class_name_registered(cls: StringName) -> bool
+```
+
+Checks if a class name is registered with `ModClassDB`.
+
+This method searches the [`registered_classes`](#registered_classes) array for a matching class name and returns the result.
+
+**Parameters**
+| Name  | Type         | Description                     |
+| :---- | :----------- | :------------------------------ |
+| `cls` | `StringName` | The name of the class to check. |
+
+**Returns**
+| Type   | Description                                               |
+| :----- | :-------------------------------------------------------- |
+| `bool` | `true` if the class name is registered, `false` otherwise |
+
+***
+
+### is_script_registered
+
+```gdscript
+func is_script_registered(cls: Script) -> bool
+```
+
+Checks if a script is registered with `ModClassDB`.
+
+This method searches the [`registered_classes`](#registered_classes) array for a matching script and returns the result.
+
+**Parameters**
+| Name  | Type     | Description          |
+| :---- | :------- | :------------------- |
+| `cls` | `Script` | The script to check. |
+
+**Returns**
+| Type   | Description                                                 |
+| :----- | :---------------------------------------------------------- |
+| `bool` | `true` if the script class is registered, `false` otherwise |
+
+***
+
+### get_by_name
+
+```gdscript
+func get_by_name(cls: StringName) -> RegisteredClass
+```
+
+Retrieves a registered class by its name.
+
+This method searches the [`registered_classes`](#registered_classes) array for a matching class name and returns the corresponding [`RegisteredClass`](#) object.
+
+**Parameters**
+| Name  | Type         | Description                        |
+| :---- | :----------- | :--------------------------------- |
+| `cls` | `StringName` | The name of the class to retrieve. |
+
+**Returns**
+| Type                   | Description           |
+| :--------------------- | :-------------------- |
+| [`RegisteredClass`](#) | The registered class. |
+
+***
+
+### get_by_script
+
+```gdscript
+func get_by_script(cls: Script) -> RegisteredClass
+```
+
+Retrieves a registered class by its script.
+
+This method searches the [`registered_classes`](#registered_classes) array for a matching script and returns the corresponding [`RegisteredClass`](#) object.
+
+**Parameters**
+| Name  | Type     | Description             |
+| :---- | :------- | :---------------------- |
+| `cls` | `Script` | The script to retrieve. |
+
+**Returns**
+| Type                   | Description           |
+| :--------------------- | :-------------------- |
+| [`RegisteredClass`](#) | The registered class. |

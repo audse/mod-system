@@ -1,161 +1,394 @@
 # Mod
 
-The `Mod` class represents a mod in the Mod System. It extends the `Resource` class and provides metadata, assets, and functionality for granting and revoking the mod to/from game objects.
+[**See the code at `mod.gd`**](https://github.com/audse/mod-system/tree/main/addons/mod_system/resources/mod.gd)
+
+## Description
+
+**Inherits `Resource`**
+
+The `Mod` class represents a mod in ModSystem. It extends the `Resource` class and provides metadata, assets, and functionality for granting and revoking the mod to/from game objects.
+
+***
 
 ## Signals
 
 ### registered
 
-- **Description**: This signal is emitted when the mod is registered with the Mod System.
+```gdscript
+signal registered
+```
+
+This signal is emitted when the mod is registered with ModSystem.
+
+***
 
 ### unregistered
 
-- **Description**: This signal is emitted when the mod is unregistered from the Mod System.
+```gdscript
+signal unregistered
+```
+
+This signal is emitted when the mod is unregistered from ModSystem.
+
+***
 
 ### enabled
 
-- **Description**: This signal is emitted when the mod is enabled.
+```gdscript
+signal enabled
+```
+
+This signal is emitted when the mod is enabled.
+
+***
 
 ### disabled
 
-- **Description**: This signal is emitted when the mod is disabled.
+```gdscript
+signal disabled
+```
 
-### granted(instance: ModInstance)
+This signal is emitted when the mod is disabled.
 
-- **Description**: This signal is emitted when the mod is granted to an object.
-- **Parameters**:
-  - `instance` (ModInstance): The granted mod instance.
+***
 
-### revoked(instance: ModInstance)
+### granted
 
-- **Description**: This signal is emitted when the mod is revoked from an object.
-- **Parameters**:
-  - `instance` (ModInstance): The revoked mod instance.
+```gdscript
+signal granted(instance: ModInstance)
+```
+
+This signal is emitted when the mod is granted to an object.
+
+**Parameters**
+
+| Name       | Type                         | Description               |
+| :--------- | :--------------------------- | :------------------------ |
+| `instance` | [`ModInstance`](ModInstance) | The granted mod instance. |
+
+***
+
+### revoked
+```gdscript
+signal revoked(instance: ModInstance)
+```
+
+This signal is emitted when the mod is revoked from an object.
+
+**Parameters**
+
+| Name       | Type                         | Description               |
+| :--------- | :--------------------------- | :------------------------ |
+| `instance` | [`ModInstance`](ModInstance) | The revoked mod instance. |
+
+***
 
 ## Properties
 
-### requires_restart: bool
+### requires_restart
+```gdscript
+var requires_restart: bool
+```
 
-- **Description**: A flag indicating whether the mod requires a game restart to take effect.
-- **Type**: bool
+A flag indicating whether the mod requires a game restart to take effect.
 
-### is_cheat: bool
+**Type**
 
-- **Description**: A flag indicating whether the mod provides cheats or cheat-like functionality.
-- **Type**: bool
+`bool`
 
-### grantable_owners: PackedStringArray
+***
 
-- **Description**: An array of registered class names that can receive this mod.
-- **Type**: PackedStringArray
+### is_cheat
+```gdscript
+var is_cheat: bool
+```
 
-### instance_script: ModScript
+A flag indicating whether the mod provides cheats or cheat-like functionality.
 
-- **Description**: The script to be run when the mod is granted to an object.
-- **Type**: ModScript
+**Type**
 
-### assets: Array[ModAsset]
+`bool`
 
-- **Description**: An array of mod assets associated with the mod.
-- **Type**: Array[ModAsset]
+***
 
-### name: String
+### grantable_owners
+```gdscript
+var grantable_owners: PackedStringArray
+```
 
-- **Description**: The name of the mod.
-- **Type**: String
+An array of registered class names that can receive this mod.
 
-### author: String
+**Type**
 
-- **Description**: The author of the mod.
-- **Type**: String
+`PackedStringArray`
 
-### version: String
+***
 
-- **Description**: The version of the mod.
-- **Type**: String
+### instance_script
+```gdscript
+var instance_script: ModScript
+```
 
-### url: String
+The script to be run when the mod is granted to an object.
 
-- **Description**: The URL where the mod can be downloaded or accessed.
-- **Type**: String
+**Type**
 
-### thumbnail: Texture2D
+[`ModScript`](ModScript)
 
-- **Description**: A thumbnail image representing the mod.
-- **Type**: Texture2D
+***
 
-### instances: Dictionary[Object, ModInstance]
+### assets
+```gdscript
+var assets: Array[ModAsset]
+```
 
-- **Description**: A dictionary that maps objects to their corresponding mod instances.
-- **Type**: Dictionary[Object, ModInstance]
+An array of mod assets associated with the mod.
 
-### is_enabled: bool (computed)
+**Type**
 
-- **Description**: A computed property indicating whether the mod is currently enabled.
-- **Type**: bool
+`Array`[[`ModAsset`](ModAsset)]
+
+***
+
+### name
+```gdscript
+var name: String
+```
+
+The name of the mod.
+
+**Type**
+
+`String`
+
+***
+
+### author
+```gdscript
+var author: String
+```
+
+The author of the mod.
+
+**Type**
+
+`String`
+
+***
+
+### version
+```gdscript
+var version: String
+```
+
+The version of the mod.
+
+**Type**
+
+`String`
+
+***
+
+### url
+```gdscript
+var url: String
+```
+
+The URL where the mod can be downloaded or accessed.
+
+**Type**
+
+`String`
+
+***
+
+### thumbnail
+```gdscript
+var thumbnail: Texture2D
+```
+
+A thumbnail image representing the mod.
+
+**Type**
+
+`Texture2D`
+
+***
+
+### instances
+```gdscript
+var instances: Dictionary[Object, ModInstance]
+```
+
+A dictionary that maps objects to their corresponding mod instances.
+
+**Type**
+
+`Dictionary`[`Object`, [`ModInstance`](ModInstance)]
+
+***
+
+### is_enabled
+```gdscript
+var is_enabled: bool # computed
+```
+
+A computed property indicating whether the mod is currently enabled.
+
+**Type**
+
+`bool`
+
+***
 
 ## Methods
 
-### grant(owner: Object) -> void
+### grant
+```gdscript
+func grant(owner: Object) -> void
+```
 
-- **Description**: Grants the mod to the specified object.
-- **Parameters**:
-  - `owner` (Object): The object to grant the mod to.
-- **Returns**: void
-- **Note**: This method creates a mod instance for the specified object and emits the `granted` signal.
+Grants the mod to the specified object. This method creates a mod instance for the specified object and emits the [`granted`](#granted) signal
 
-### revoke(owner: Object) -> void
+**Parameters**
 
-- **Description**: Revokes the mod from the specified object.
-- **Parameters**:
-  - `owner` (Object): The object to revoke the mod from.
-- **Returns**: void
-- **Note**: This method removes the mod instance associated with the specified object and emits the `revoked` signal.
+| Name    | Type     | Description                     |
+| :------ | :------- | :------------------------------ |
+| `owner` | `Object` | The object to grant the mod to. |
 
-### get_instance(owner: Object) -> ModInstance
+**Returns** 
 
-- **Description**: Retrieves the mod instance associated with the specified object.
-- **Parameters**:
-  - `owner` (Object): The object to retrieve the mod instance for.
-- **Returns**: ModInstance - The mod
+`void`
 
- instance associated with the object, or `null` if no instance exists.
-- **Note**: This method returns the mod instance for the specified object. If no instance exists, it returns `null`.
+***
 
-### get_asset(key: String) -> ModAsset
+### revoke
+```gdscript
+func revoke(owner: Object) -> void
+```
 
-- **Description**: Retrieves a mod asset by its key.
-- **Parameters**:
-  - `key` (String): The key of the asset to retrieve.
-- **Returns**: ModAsset - The mod asset with the specified key, or `null` if not found.
-- **Note**: This method searches the `assets` array and returns the mod asset with the matching key. If no asset is found, it returns `null`.
+Revokes the mod from the specified object. This method removes the mod instance associated with the specified object and emits the [`revoked`](#revoked) signal.
 
-### _on_registered() -> void
+**Parameters**
 
-- **Description**: This method is called when the mod is registered with the Mod System.
-- **Returns**: void
-- **Note**: This method is intended to be overridden by subclasses to perform additional actions when the mod is registered.
+| Name    | Type     | Description                        |
+| :------ | :------- | :--------------------------------- |
+| `owner` | `Object` | The object to revoke the mod from. |
 
-### _on_unregistered() -> void
+**Returns** 
 
-- **Description**: This method is called when the mod is unregistered from the Mod System.
-- **Returns**: void
-- **Note**: This method is intended to be overridden by subclasses to perform additional actions when the mod is unregistered.
+`void`
 
-### _on_enabled() -> void
+***
 
-- **Description**: This method is called when the mod is enabled.
-- **Returns**: void
-- **Note**: This method is intended to be overridden by subclasses to perform additional actions when the mod is enabled.
+### get_instance
+```gdscript
+func get_instance(owner: Object) -> ModInstance
+```
 
-### _on_disabled() -> void
+Retrieves the mod instance associated with the specified object. If no instance exists, it returns `null`.
 
-- **Description**: This method is called when the mod is disabled.
-- **Returns**: void
-- **Note**: This method is intended to be overridden by subclasses to perform additional actions when the mod is disabled.
+**Parameters**
 
-### get_identifier() -> String
+| Name    | Type     | Description                                  |
+| :------ | :------- | :------------------------------------------- |
+| `owner` | `Object` | The object to retrieve the mod instance for. |
 
-- **Description**: Retrieves the unique identifier of the mod.
-- **Returns**: String - The mod's unique identifier.
-- **Note**: This method returns a unique identifier for the mod, which can be used to differentiate it from other mods.
+
+**Returns** 
+
+| Type                         | Description                                                                   |
+| :--------------------------- | :---------------------------------------------------------------------------- |
+| [`ModInstance`](ModInstance) | The mod instance associated with the object, or `null` if no instance exists. |
+
+***
+
+### get_asset
+```gdscript
+func get_asset(key: String) -> ModAsset
+```
+
+Retrieves a mod asset by its key. This method searches the [`assets`](#assets) array and returns the mod asset with the matching key. If no asset is found, it returns `null`.
+
+**Parameters**
+
+| Name  | Type     | Description                       |
+| :---- | :------- | :-------------------------------- |
+| `key` | `String` | The key of the asset to retrieve. |
+
+**Returns** 
+
+[`ModAsset`](ModAsset) - The mod asset with the specified key, or `null` if not found.
+
+***
+
+### _on_registered
+```gdscript
+func _on_registered() -> void
+```
+
+This method is called when the mod is registered with ModSystem.
+
+**Note:** This method is intended to be overridden by subclasses to perform additional actions when the mod is registered.
+
+**Returns**
+
+`void`
+
+***
+
+### _on_unregistered
+```gdscript
+func _on_unregistered() -> void
+```
+
+This method is called when the mod is unregistered from ModSystem.
+
+**Note:** This method is intended to be overridden by subclasses to perform additional actions when the mod is unregistered.
+
+**Returns**
+
+`void`
+
+***
+
+### _on_enabled
+```gdscript
+func _on_enabled() -> void
+```
+
+This method is called when the mod is enabled. 
+
+**Note:** This method is intended to be overridden by subclasses to perform additional actions when the mod is enabled.
+
+**Returns** 
+
+`void`
+
+***
+
+### _on_disabled
+```gdscript
+func _on_disabled() -> void
+```
+
+This method is called when the mod is disabled. 
+
+**Note:** This method is intended to be overridden by subclasses to perform additional actions when the mod is disabled.
+
+**Returns** 
+
+`void`
+
+***
+
+### get_identifier
+```gdscript
+func get_identifier() -> String
+```
+
+Retrieves the unique identifier of the mod. This method returns a unique identifier for the mod, which can be used to differentiate it from other mods.
+
+**Returns** 
+
+`String` - The mod's unique identifier.
