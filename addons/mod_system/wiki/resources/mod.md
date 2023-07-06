@@ -12,23 +12,23 @@ The `Mod` class represents a mod in ModSystem. It extends the `Resource` class a
 
 ## Signals
 
-### registered
+### installed
 
 ```gdscript
-signal registered
+signal installed
 ```
 
-This signal is emitted when the mod is registered with ModSystem.
+This signal is emitted when the mod is installed with ModSystem.
 
 ***
 
-### unregistered
+### uninstalled
 
 ```gdscript
-signal unregistered
+signal uninstalled
 ```
 
-This signal is emitted when the mod is unregistered from ModSystem.
+This signal is emitted when the mod is uninstalled from ModSystem.
 
 ***
 
@@ -322,14 +322,14 @@ Retrieves a mod asset by its key. This method searches the [`assets`](#assets) a
 
 ***
 
-### _on_registered
+### _on_installed
 ```gdscript
-func _on_registered() -> void
+func _on_installed() -> void
 ```
 
-This method is called when the mod is registered with ModSystem.
+This method is called when the mod is installed with ModSystem.
 
-**Note:** This method is intended to be overridden by subclasses to perform additional actions when the mod is registered.
+**Note:** This method is intended to be overridden by subclasses to perform additional actions when the mod is installed.
 
 **Returns**
 
@@ -337,14 +337,14 @@ This method is called when the mod is registered with ModSystem.
 
 ***
 
-### _on_unregistered
+### _on_uninstalled
 ```gdscript
-func _on_unregistered() -> void
+func _on_uninstalled() -> void
 ```
 
-This method is called when the mod is unregistered from ModSystem.
+This method is called when the mod is uninstalled from ModSystem.
 
-**Note:** This method is intended to be overridden by subclasses to perform additional actions when the mod is unregistered.
+**Note:** This method is intended to be overridden by subclasses to perform additional actions when the mod is uninstalled.
 
 **Returns**
 

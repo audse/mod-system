@@ -2,7 +2,7 @@ class_name ModAsset extends Resource
 
 ## Contains a [String] identifier and a [Resource], loaded once per associated [Mod]
 ##
-## A [ModAsset] is a named [Resource] that is loaded when a [Mod] is registered. That way, all
+## A [ModAsset] is a named [Resource] that is loaded when a [Mod] is installed. That way, all
 ## instances of the mod share the same resource.
 ## [br][br]This is also helpful so that you can get assets by referencing the [member key] rather
 ## than worrying about loading/file paths.

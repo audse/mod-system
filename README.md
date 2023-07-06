@@ -35,7 +35,7 @@ ModSystem is a plugin for Godot 4 that provides a framework for extending and mo
 1. [Overview](addons/mod_system/wiki/overview.md)
 2. [Autoload](addons/mod_system/wiki/autoload) - the singletons created when your game starts
 	1. [ModClassDB](addons/mod_system/wiki/autoload/mod_class_db.md) - a database that tracks which classes are extensible by mods
-	2. [ModLoader](addons/mod_system/wiki/autoload/mod_loader.md) - responsible for loading and registering mods
+	2. [ModLoader](addons/mod_system/wiki/autoload/mod_loader.md) - responsible for loading and installing mods
 	3. [ModSystem](addons/mod_system/wiki/autoload/mod_system.md) - handles management of mods within the game (enabling, disabling, granting, etc.)
 3. [Resources](addons/mod_system/wiki/resources) - data and asset classes
 	1. [ModAsset](addons/mod_system/wiki/resources/mod_asset.md) - stores a key and asset pair

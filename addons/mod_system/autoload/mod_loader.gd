@@ -19,7 +19,7 @@ func _ready() -> void:
 
 
 ## Recursively finds all mod paths (must end in [code].mod.tres[/code] or [code].mod.json[/code])
-## and loads/registers them (see [method load_mod] and [method ModSystem.register]).
+## and loads/registers them (see [method load_mod] and [method ModSystem.install]).
 func load_all_mods() -> void:
 	is_finished_loading = false
 	Array(ModSystemProjectSettings.get_mod_dirs()).map(load_mods_from_dir)
@@ -29,7 +29,7 @@ func load_all_mods() -> void:
 
 ## Recursively finds all mod paths (must end in [code].mod.tres[/code] or [code].mod.json[/code])
 ## within the provided directory and loads/registers them (see [method load_mod] and 
-## [method ModSystem.register]).
+## [method ModSystem.install]).
 func load_mods_from_dir(dir_path: String) -> Array[Mod]:
 	var mods: Array[Mod] = []
 	for path in discover_mod_paths([dir_path]):
@@ -56,11 +56,11 @@ func load_zipped_mods(path: String) -> Array[Mod]:
 	return mods
 
 
-## Loads a mod at the given [code]path[/code] and registers it (see [method ModSystem.register]).
+## Loads a mod at the given [code]path[/code] and registers it (see [method ModSystem.install]).
 func load_mod(path: String, loader := ModContentLoader.new()) -> Mod:
 	var resource := loader.load_mod(path)
 	if resource:
-		ModSystem.register(resource)
+		ModSystem.install(resource)
 		return resource
 	return null
 

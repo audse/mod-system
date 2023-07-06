@@ -10,7 +10,7 @@ The `ModLoader` class is a singleton responsible for loading mods. Upon game sta
 
 1. Recursively searches for mod files (`.mod.tres` or `.mod.json` files) within the directories specified in the `ProjectSettings."mod_system/mod_paths"` property
 2. Loads the mods it found
-3. Communicates with `ModSystem` to register them using the `ModSystem.register` method.
+3. Communicates with `ModSystem` to install them using the `ModSystem.install` method.
 
 The `ModLoader` class is designed to work in conjunction with the `ModSystem` class, which manages the overall functionality and behavior of mods in the game.
 
@@ -24,7 +24,7 @@ The `ModLoader` class is designed to work in conjunction with the `ModSystem` cl
 signal finished_loading
 ```
 
-This signal is emitted when all mods have been loaded and registered.
+This signal is emitted when all mods have been loaded and installed.
 
 ***
 
@@ -33,10 +33,10 @@ This signal is emitted when all mods have been loaded and registered.
 ### is_finished_loading
 
 ```gdscript
-var registered_mods: Array[Mod]
+var is_finished_loading: bool
 ```
 
-If `true`, all mods have been loaded and registered.
+If `true`, all mods have been loaded and installed.
 
 **Type**
 
@@ -53,7 +53,7 @@ If `true`, all mods have been loaded and registered.
 func load_all_mods() -> void
 ```
 
-Recursively finds all mod paths that end with `.mod.tres` or `.mod.json`, loads them, and registers them using the `ModSystem.register` method.
+Recursively finds all mod paths that end with `.mod.tres` or `.mod.json`, loads them, and installs them using the `ModSystem.install` method.
 
 ***
 
@@ -63,7 +63,7 @@ Recursively finds all mod paths that end with `.mod.tres` or `.mod.json`, loads 
 func load_mod(path: String) -> Mod
 ```
 
-Loads a mod at the specified `path` and registers it using the `ModSystem.register` method.
+Loads a mod at the specified `path` and installs it using the `ModSystem.install` method.
 
 **Parameters**
 
@@ -95,6 +95,6 @@ Recursively searches each listed directory for mods and returns a list of all pa
 
 **Returns**
 
-| Type              | Description                                                  |
-| ----------------- | ------------------------------------------------------------ |
+| Type              | Description                                                       |
+| ----------------- | ----------------------------------------------------------------- |
 | `Array`[`String`] | Returns all paths to mods within the listed `dirs` (recursively). |

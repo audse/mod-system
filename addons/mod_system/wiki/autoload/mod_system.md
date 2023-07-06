@@ -6,41 +6,41 @@
 
 **Inherits `Node`**
 
-The `ModSystem` class is a singleton that handles the management of mods within the game. It provides methods for registering, enabling, disabling, granting, and revoking mods. The `ModSystem` is responsible for maintaining the state of mods and their instances, as well as facilitating communication between mods and the game objects they affect.
+The `ModSystem` class is a singleton that handles the management of mods within the game. It provides methods for installing, enabling, disabling, granting, and revoking mods. The `ModSystem` is responsible for maintaining the state of mods and their instances, as well as facilitating communication between mods and the game objects they affect.
 
 ***
 
 ## Signals
 
-### mod_registered
+### mod_installed
 
 ```gdscript
-signal mod_registered(mod: Mod)
+signal mod_installed(mod: Mod)
 ```
 
-This signal is emitted when a mod is registered with the Mod System.
+This signal is emitted when a mod is installed with the Mod System.
 
 **Parameters**
 
-| Name  | Type         | Description         |
-| :---- | :----------- | :------------------ |
-| `mod` | [`Mod`](Mod) | The registered mod. |
+| Name  | Type         | Description        |
+| :---- | :----------- | :----------------- |
+| `mod` | [`Mod`](Mod) | The installed mod. |
 
 ***
 
-### mod_unregistered
+### mod_uninstalled
 
 ```gdscript
-signal mod_unregistered(mod: Mod)
+signal mod_uninstalled(mod: Mod)
 ```
 
-This signal is emitted when a mod is unregistered from the Mod System.
+This signal is emitted when a mod is uninstalled from the Mod System.
 
 **Parameters**
 
-| Name  | Type         | Description           |
-| :---- | :----------- | :-------------------- |
-| `mod` | [`Mod`](Mod) | The unregistered mod. |
+| Name  | Type         | Description          |
+| :---- | :----------- | :------------------- |
+| `mod` | [`Mod`](Mod) | The uninstalled mod. |
 
 ***
 
@@ -86,9 +86,9 @@ This signal is emitted when a mod is granted to an object.
 
 **Parameters**
 
-| Name       | Type                         | Description                |
-| :--------- | :--------------------------- | :------------------------- |
-| `instance` | [`ModInstance`](ModInstance) | The granted mod instance.  |
+| Name       | Type                         | Description               |
+| :--------- | :--------------------------- | :------------------------ |
+| `instance` | [`ModInstance`](ModInstance) | The granted mod instance. |
 
 ***
 
@@ -110,13 +110,13 @@ This signal is emitted when a mod is revoked from an object.
 
 ## Properties
 
-### registered_mods
+### installed_mods
 
 ```gdscript
-var registered_mods: Array[Mod]
+var installed_mods: Array[Mod]
 ```
 
-An array that holds the registered mods.
+An array that holds the installed mods.
 
 **Type**
 
@@ -162,21 +162,21 @@ This method registers the `mod_owner` object with the `ModClassDB` and grants al
 
 ***
 
-### register
+### install
 
 ```gdscript
-func register(mod: Mod) -> void
+func install(mod: Mod) -> void
 ```
 
-Registers a mod with the Mod System.
+Installs a mod to the Mod System.
 
-This method adds the specified mod to the `registered_mods` array. The `mod_registered` signal is emitted after successful registration.
+This method adds the specified mod to the `installed_mods` array. The `mod_installed` signal is emitted after successful registration.
 
 **Parameters**
 
-| Name   | Type         | Description          |
-| :----- | :----------- | :------------------- |
-| `mod`  | [`Mod`](Mod) | The mod to register. |
+| Name  | Type         | Description         |
+| :---- | :----------- | :------------------ |
+| `mod` | [`Mod`](Mod) | The mod to install. |
 
 **Returns**
 
@@ -184,21 +184,21 @@ This method adds the specified mod to the `registered_mods` array. The `mod_regi
 
 ***
 
-### unregister
+### uninstall
 
 ```gdscript
-func unregister(mod: Mod) -> void
+func uninstall(mod: Mod) -> void
 ```
 
-Unregisters a mod from the Mod System.
+Uninstalls a mod from the Mod System.
 
-This method removes the specified mod from the `registered_mods` array. The `mod_unregistered` signal is emitted after successful unregistration.
+This method removes the specified mod from the `installed_mods` array. The `mod_uninstalled` signal is emitted after successful unregistration.
 
 **Parameters**
 
-| Name   | Type         | Description            |
-| :----- | :----------- | :--------------------- |
-| `mod`  | [`Mod`](Mod) | The mod to unregister. |
+| Name  | Type         | Description           |
+| :---- | :----------- | :-------------------- |
+| `mod` | [`Mod`](Mod) | The mod to uninstall. |
 
 **Returns**
 
@@ -218,9 +218,9 @@ This method enables the specified mod and emits the `mod_enabled` signal.
 
 **Parameters**
 
-| Name   | Type         | Description        |
-| :----- | :----------- | :----------------- |
-| `mod`  | [`Mod`](Mod) | The mod to enable. |
+| Name  | Type         | Description        |
+| :---- | :----------- | :----------------- |
+| `mod` | [`Mod`](Mod) | The mod to enable. |
 
 **Returns**
 
@@ -240,9 +240,9 @@ This method disables the specified mod and emits the `mod_disabled` signal.
 
 **Parameters**
 
-| Name   | Type         | Description         |
-| :----- | :----------- | :------------------ |
-| `mod`  | [`Mod`](Mod) | The mod to disable. |
+| Name  | Type         | Description         |
+| :---- | :----------- | :------------------ |
+| `mod` | [`Mod`](Mod) | The mod to disable. |
 
 **Returns**
 
@@ -256,9 +256,9 @@ This method disables the specified mod and emits the `mod_disabled` signal.
 func enable_all() -> void
 ```
 
-Enables all registered mods.
+Enables all installed mods.
 
-This method enables all mods in the `registered_mods` array and emits the `mod_enabled` signal for each enabled mod.
+This method enables all mods in the `installed_mods` array and emits the `mod_enabled` signal for each enabled mod.
 
 **Returns**
 
@@ -272,9 +272,9 @@ This method enables all mods in the `registered_mods` array and emits the `mod_e
 func disable_all() -> void
 ```
 
-Disables all registered mods.
+Disables all installed mods.
 
-This method disables all mods in the `registered_mods` array and emits the `mod_disabled` signal for each disabled mod.
+This method disables all mods in the `installed_mods` array and emits the `mod_disabled` signal for each disabled mod.
 
 **Returns**
 
@@ -294,10 +294,10 @@ This method grants the specified mod to the specified mod_owner object and emits
 
 **Parameters**
 
-| Name         | Type         | Description                     |
-| :----------- | :----------- | :------------------------------ |
-| `mod`        | [`Mod`](Mod) | The mod to grant.               |
-| `mod_owner`  | `Object`     | The object to grant the mod to. |
+| Name        | Type         | Description                     |
+| :---------- | :----------- | :------------------------------ |
+| `mod`       | [`Mod`](Mod) | The mod to grant.               |
+| `mod_owner` | `Object`     | The object to grant the mod to. |
 
 **Returns**
 
@@ -317,9 +317,9 @@ This method grants all possible mods to the specified mod_owner object and emits
 
 **Parameters**
 
-| Name         | Type     | Description                      |
-| :----------- | :------- | :------------------------------- |
-| `mod_owner`  | `Object` | The object to grant the mods to. |
+| Name        | Type     | Description                      |
+| :---------- | :------- | :------------------------------- |
+| `mod_owner` | `Object` | The object to grant the mods to. |
 
 **Returns**
 
@@ -339,10 +339,10 @@ This method revokes the specified mod from the specified mod_owner object and em
 
 **Parameters**
 
-| Name         | Type         | Description                        |
-| :----------- | :----------- | :--------------------------------- |
-| `mod`        | [`Mod`](Mod) | The mod to revoke.                 |
-| `mod_owner`  | `Object`     | The object to revoke the mod from. |
+| Name        | Type         | Description                        |
+| :---------- | :----------- | :--------------------------------- |
+| `mod`       | [`Mod`](Mod) | The mod to revoke.                 |
+| `mod_owner` | `Object`     | The object to revoke the mod from. |
 
 **Returns**
 
@@ -362,9 +362,9 @@ This method revokes all possible mods from the specified mod_owner object and em
 
 **Parameters**
 
-| Name         | Type     | Description                         |
-| :----------- | :------- | :---------------------------------- |
-| `mod_owner`  | `Object` | The object to revoke the mods from. |
+| Name        | Type     | Description                         |
+| :---------- | :------- | :---------------------------------- |
+| `mod_owner` | `Object` | The object to revoke the mods from. |
 
 **Returns**
 
@@ -380,13 +380,13 @@ func get_grantable_mods(mod_owner: Object) -> Array[Mod]
 
 Returns an array of all mods that can be granted to the specified object.
 
-This method searches the `registered_mods` array and returns all mods where the `Mod.grantable_owners` property contains the name of the registered class of the `mod_owner` object.
+This method searches the `installed_mods` array and returns all mods where the `Mod.grantable_owners` property contains the name of the registered class of the `mod_owner` object.
 
 **Parameters**
 
-| Name         | Type     | Description                                |
-| :----------- | :------- | :----------------------------------------- |
-| `mod_owner`  | `Object` | The object to retrieve grantable mods for. |
+| Name        | Type     | Description                                |
+| :---------- | :------- | :----------------------------------------- |
+| `mod_owner` | `Object` | The object to retrieve grantable mods for. |
 
 **Returns**
 
@@ -404,13 +404,13 @@ func get_mod_by_id(id: String) -> Mod
 
 Retrieves a mod by its ID.
 
-This method searches the `registered_mods` array and returns the mod with the matching ID.
+This method searches the `installed_mods` array and returns the mod with the matching ID.
 
 **Parameters**
 
-| Name   | Type     | Description                    |
-| :----- | :------- | :----------------------------- |
-| `id`   | `String` | The ID of the mod to retrieve. |
+| Name | Type     | Description                    |
+| :--- | :------- | :----------------------------- |
+| `id` | `String` | The ID of the mod to retrieve. |
 
 **Returns**
 

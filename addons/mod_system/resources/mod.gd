@@ -8,11 +8,11 @@ class_name Mod extends Resource
 ## so this resource only handles [b]shared data[/b].
 ## [br][br]A mod may only be instanced once per game [Object].
 
-## Emitted when this mod is registered in the ModSystem.
-signal registered
+## Emitted when this mod is installed in the ModSystem.
+signal installed
 
-## Emitted when this mod is unregistered from the ModSystem.
-signal unregistered
+## Emitted when this mod is uninstalled from the ModSystem.
+signal uninstalled
 
 ## Emitted when this mod is enabled by the user. This does not mean that the mod is in effect.
 ## See [member ModSettings.enabled_mods].
@@ -69,8 +69,8 @@ var is_enabled: bool:
 
 
 func _init() -> void:
-	registered.connect(_on_registered)
-	unregistered.connect(_on_unregistered)
+	installed.connect(_on_installed)
+	uninstalled.connect(_on_uninstalled)
 	enabled.connect(_on_enabled)
 	disabled.connect(_on_disabled)
 
@@ -98,14 +98,14 @@ func get_asset(key: String) -> ModAsset:
 	return null
 
 
-## Called when [signal registered] is emitted.
-func _on_registered() -> void:
-	ModSystemLogger.mod_log(self, "Registered")
+## Called when [signal installed] is emitted.
+func _on_installed() -> void:
+	ModSystemLogger.mod_log(self, "Installed")
 
 
-## Called when [signal unregistered] is emitted.
-func _on_unregistered() -> void:
-	ModSystemLogger.mod_log(self, "Unregistered")
+## Called when [signal uninstalled] is emitted.
+func _on_uninstalled() -> void:
+	ModSystemLogger.mod_log(self, "Uninstalled")
 
 
 ## Called when [signal enabled] is emitted.

@@ -2,14 +2,14 @@ extends Node
 
 ## A singleton that handles all global functions needed for the mod system
 ##
-## This class is the main point of entry for working with the mod system. You can register,
+## This class is the main point of entry for working with the mod system. You can install,
 ## enable, and grant mods all from this singleton.
 
-## Emitted after a [Mod] is registered. See [method register].
-signal mod_registered(mod: Mod)
+## Emitted after a [Mod] is installed. See [method install].
+signal mod_installed(mod: Mod)
 
-## Emitted after a [Mod] is unregistered. See [method unregister].
-signal mod_unregistered(mod: Mod)
+## Emitted after a [Mod] is uninstalled. See [method uninstall].
+signal mod_uninstalled(mod: Mod)
 
 ## Emitted after a [Mod] is enabled. See [method enable].
 signal mod_enabled(mod: Mod)
@@ -23,8 +23,8 @@ signal mod_granted(instance: ModInstance)
 ## Emitted after a [Mod] is revoked from an [Object], destroying a [ModInstance]. See [method revoke].
 signal mod_revoked(instance: ModInstance)
 
-## An [Array][[Mod]] of currently registered mods.
-var registered_mods: Array[Mod] = []
+## An [Array][[Mod]] of currently installed mods.
+var installed_mods: Array[Mod] = []
 
 ## The [ModSettings] object for the current user (see [method ModSettings.load_settings]).
 var settings: ModSettings = ModSettings.load_settings()
@@ -45,48 +45,48 @@ func initialize(mod_owner: Object) -> void:
 	grant_all(mod_owner)
 
 
-## Registers the given [Mod] to [member registered_mods].
-func register(mod: Mod) -> void:
-	if not mod in registered_mods:
-		registered_mods.append(mod)
-		mod_registered.emit(mod)
-		mod.registered.emit()
+## Installs the given [Mod] to [member installed_mods].
+func install(mod: Mod) -> void:
+	if not mod in installed_mods:
+		installed_mods.append(mod)
+		mod_installed.emit(mod)
+		mod.installed.emit()
 
 
-## Unregisters the given [Mod] from [member registered_mods].
-func unregister(mod: Mod) -> void:
-	if mod in registered_mods:
-		registered_mods.erase(mod)
-		mod_unregistered.emit(mod)
-		mod.unregistered.emit()
+## Uninstall the given [Mod] from [member installed_mods].
+func uninstall(mod: Mod) -> void:
+	if mod in installed_mods:
+		installed_mods.erase(mod)
+		mod_uninstalled.emit(mod)
+		mod.uninstalled.emit()
 
 
 ## If possible, enables the given [Mod]. See [method ModSettings.enable_mod].
 func enable(mod: Mod) -> void:
 	await _after_finished_loading()
-	if mod in registered_mods and settings.can_enable(mod):
+	if mod in installed_mods and settings.can_enable(mod):
 		settings.enable_mod(mod)
 		mod_enabled.emit(mod)
 		mod.enabled.emit()
 
 
-## Enables all [member registered_mods]. See [method enable].
+## Enables all [member installed_mods]. See [method enable].
 func enable_all() -> void:
 	await _after_finished_loading()
-	registered_mods.map(enable)
+	installed_mods.map(enable)
 
 
 ## If possible, disables the given [Mod]. See [method ModSettings.disable_mod].
 func disable(mod: Mod) -> void:
-	if mod in registered_mods and settings.can_disable(mod):
+	if mod in installed_mods and settings.can_disable(mod):
 		settings.disable_mod(mod)
 		mod_disabled.emit(mod)
 		mod.disabled.emit()
 
 
-## Disables all [member registered_mods]. See [method disable].
+## Disables all [member installed_mods]. See [method disable].
 func disable_all() -> void:
-	registered_mods.map(disable)
+	installed_mods.map(disable)
 
 
 ## Grants the [Mod] to the [code]mod_owner[/code] object, if possible. See [method Mod.grant].
@@ -118,7 +118,7 @@ func revoke_all(mod_owner: Object) -> void:
 ## [br]Classes must be registered in [ModClassDB] to find any grantable mods.
 ## This list is created by:
 ## [br]1. Looking for the [RegisteredClass] of [code]mod_owner[/code]
-## [br]2. Looking through all [member registered_mods] and returning all [Mod]s where 
+## [br]2. Looking through all [member installed_mods] and returning all [Mod]s where 
 ## [member Mod.grantable_owners] contains the [member RegisteredClass.name] of [code]mod_owner[/code]
 func get_grantable_mods(mod_owner: Object) -> Array:
 	var grantable_mods: Array[Mod] = []
@@ -130,8 +130,8 @@ func get_grantable_mods(mod_owner: Object) -> Array:
 	return grantable_mods
 
 
-## Searches [member registered_mods] for the given ID. The ID comes from [method Mod.get_identifier].
+## Searches [member installed_mods] for the given ID. The ID comes from [method Mod.get_identifier].
 func get_mod_by_id(id: String) -> Mod:
-	for mod in registered_mods:
+	for mod in installed_mods:
 		if mod.get_identifier() == id: return mod
 	return null
