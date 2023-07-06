@@ -3,10 +3,14 @@ extends Node
 
 ## Handles loading and registering mods from the file system
 
-## Emitted when all mods have been loaded and registered
+## Emitted when started to load mods.
+signal started_loading
+
+## Emitted when all mods have been loaded and registered.
 signal finished_loading
 
-## If [code]true[/code], all mods have been loaded and registered
+
+## If [code]true[/code], all mods have been loaded and registered.
 var is_finished_loading: bool = false
 
 
@@ -17,14 +21,44 @@ func _ready() -> void:
 ## Recursively finds all mod paths (must end in [code].mod.tres[/code] or [code].mod.json[/code])
 ## and loads/registers them (see [method load_mod] and [method ModSystem.register]).
 func load_all_mods() -> void:
-	discover_mod_paths(ModSystemProjectSettings.get_mod_dirs()).map(load_mod)
+	is_finished_loading = false
+	Array(ModSystemProjectSettings.get_mod_dirs()).map(load_mods_from_dir)
 	is_finished_loading = true
 	finished_loading.emit()
 
 
+## Recursively finds all mod paths (must end in [code].mod.tres[/code] or [code].mod.json[/code])
+## within the provided directory and loads/registers them (see [method load_mod] and 
+## [method ModSystem.register]).
+func load_mods_from_dir(dir_path: String) -> Array[Mod]:
+	var mods: Array[Mod] = []
+	for path in discover_mod_paths([dir_path]):
+		if path.to_lower().get_extension() == "zip":
+			mods.append_array(load_zipped_mods(path))
+		else: mods.append(load_mod(path))
+	return mods
+
+
+## Loads all mods inside the given zip [code]path[/code].
+func load_zipped_mods(path: String) -> Array[Mod]:
+	var mods: Array[Mod] = []
+	var base_path := path.get_base_dir()
+	ModZipReader.read(
+		path, 
+		func(reader: ModZipReader, zipped_paths: PackedStringArray) -> Array[Mod]:
+			var zipped_mods: Array[Mod] = []
+			for zip_path in zipped_paths:
+				if ModPath.is_mod_path(zip_path):
+					var mod := load_mod(zip_path, ModContentLoader.new_zip(reader))
+					if mod: zipped_mods.append(mod)
+			return zipped_mods
+	)
+	return mods
+
+
 ## Loads a mod at the given [code]path[/code] and registers it (see [method ModSystem.register]).
-func load_mod(path: String) -> Mod:
-	var resource := ModSystemResourceLoader.load_mod(path)
+func load_mod(path: String, loader := ModContentLoader.new()) -> Mod:
+	var resource := loader.load_mod(path)
 	if resource:
 		ModSystem.register(resource)
 		return resource

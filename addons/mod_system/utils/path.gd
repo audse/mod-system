@@ -25,7 +25,10 @@ static func get_extension(path: String) -> String:
 ## [code]*.mod.tres[/code], [code]*.mod.res[/code], or [code]*.mod.json[/code]
 static func is_mod_path(path: String) -> bool:
 	var ext := ModPath.get_extension(path)
-	return ext in ["mod.tres", "mod.res", "mod.json"]
+	return (
+		not path.get_file().begins_with(".") 
+		and ext in ["mod.tres", "mod.res", "mod.json", "mod.zip"]
+	)
 
 
 ## Returns a new path with extension [code].import.tres[/code]

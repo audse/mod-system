@@ -15,13 +15,3 @@ func _init(script: GDScript) -> void:
 	take_over_path(script.resource_path)
 	registered_class = ModClassDB.register(self)
 	reload()
-
-
-## Creates a new [ModScript] from the file at the given [code]path[/code], and registers it with
-## [ModClassDB].
-static func load_script(path: String) -> ModScript:
-	if ResourceLoader.exists(path, "GDScript"):
-		var resource: Resource = ResourceLoader.load(path, "GDScript")
-		if resource != null and resource is GDScript:
-			return ModScript.new(resource)
-	return null

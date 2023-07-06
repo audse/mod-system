@@ -1,5 +1,7 @@
 class_name JsonMod extends Mod
 
+@export var is_zipped: bool = false
+
 ## A [Mod] that is created by loading data from a JSON [Dictionary]
 ##
 ## See [Mod] for more information.
@@ -7,9 +9,12 @@ class_name JsonMod extends Mod
 ## The path to the JSON file from which this mod was created.
 @export var json_path: String = ""
 
+var loader: ModContentLoader = null
 
-func _init(json_path_value: String, json: Dictionary) -> void:
+
+func _init(json_path_value: String, json: Dictionary, loader_value := ModContentLoader.new()) -> void:
 	json_path = json_path_value
+	loader = loader_value
 	
 	# Gameplay
 	requires_restart = json.get("requires_restart", false)
@@ -40,9 +45,7 @@ func _init(json_path_value: String, json: Dictionary) -> void:
 	
 	var thumbnail_path: String = meta.get("thumbnail", "")
 	if not thumbnail_path.is_empty():
-		var path := to_absolute_path(thumbnail_path)
-		thumbnail = ModSystemResourceLoader.load_image(path, true)
-	
+		thumbnail = loader.load_image(to_absolute_path(thumbnail_path))
 	
 	super._init()
 
@@ -56,9 +59,11 @@ func to_absolute_path(path: String) -> String:
 ## Loads a script (extending [ModInstanceScript]) at the given path and returns a new [ModScript].
 func load_instance_script(path: String) -> ModScript:
 	if not path.is_empty():
-		var script := ModScript.load_script(path)
-		if script and script.registered_class.has_ancestor(ModClassDB.get_by_name(&"ModInstanceScript")):
-			return script
+		var loaded_script := loader.load_script(path)
+		if loaded_script:
+			var script: ModScript = ModScript.new(loaded_script)
+			if script and script.registered_class.has_ancestor(ModClassDB.get_by_name(&"ModInstanceScript")):
+				return script
 	return null
 
 
@@ -67,8 +72,8 @@ func load_instance_script(path: String) -> ModScript:
 func load_asset(key: String, relative_path: String, type: String = "resource") -> ModAsset:
 	var path := to_absolute_path(relative_path)
 	match type.to_lower():
-		"resource": return ModAsset.create(key, ModSystemResourceLoader.load_resource(path))
-		"image": return ModAsset.create(key, ModSystemResourceLoader.load_image(path, true))
+		"resource": return ModAsset.create(key, loader.load_resource(path))
+		"image": return ModAsset.create(key, loader.load_image(path))
 		_: return null
 
 
