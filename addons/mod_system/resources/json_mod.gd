@@ -1,7 +1,5 @@
 class_name JsonMod extends Mod
 
-@export var is_zipped: bool = false
-
 ## A [Mod] that is created by loading data from a JSON [Dictionary]
 ##
 ## See [Mod] for more information.
